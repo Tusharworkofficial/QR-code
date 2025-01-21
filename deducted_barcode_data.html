@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deducted Barcode Data</title>
+    <style>
+        :root {
+            --primary-color: #8F0524;
+            --secondary-color: #f5f5f5;
+            --background-color: #576363;
+            --text-color: #333333;
+            --accent-color: #8F0524;
+            --button-hover-color: #4A0714;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --background-colors: #f5f5f5;
+            --highlight-color: #FCC5A8;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        :root {
+            --color-1: #8F0524;
+            --text-color: #f0f0f0;
+            --accent-color: #FCC5A8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 12pt;
+            font-family: Poppins, Segoe UI, Tahoma, sans-serif;
+        }
+
+        nav {
+            height: 60px;
+            background-color: var(--color-1);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .links-container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        nav a {
+            height: 100%;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+
+        }
+
+        nav a:hover {
+            background-color: var(--accent-color);
+            border: 2px solid #ff9900;
+            box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+            color: rgb(22, 159, 168);
+        }
+
+        nav .home-link {
+            margin-right: auto;
+
+        }
+
+        nav .a {
+            border-bottom: 1px solid white;
+
+        }
+
+        nav svg {
+            fill: var(--text-color);
+            border: 1px solid white;
+        }
+
+        #sidebar-active {
+            display: none;
+        }
+
+        .open-sidebar-button,
+        .close-sidebar-button {
+            display: none;
+
+        }
+
+        @media(max-width: 450px) {
+            .links-container {
+                flex-direction: column;
+                align-items: flex-start;
+                border-bottom: 100px solid white;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                z-index: 10;
+                width: 300px;
+
+                background-color: var(--color-1);
+                box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
+                transition: 0.75s ease-out;
+            }
+
+            nav a {
+                box-sizing: border-box;
+                height: auto;
+                width: 100%;
+                padding: 20px 30px;
+                justify-content: flex-start;
+                border-bottom: 1px solid white;
+            }
+
+            nav .home-link {
+                border-top: 1px solid white;
+            }
+
+            .open-sidebar-button,
+            .close-sidebar-button {
+                padding: 32px;
+                display: block;
+                padding-top: 37px;
+            }
+
+            #sidebar-active:checked~.links-container {
+                right: 0;
+            }
+
+            #sidebar-active:checked~#overlay {
+                height: 100%;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 9;
+            }
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-left: 2px;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+        }
+
+        td {
+            background-color: #f5f5f5;
+            color: black;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .controls input,
+        .controls button {
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .controls button {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .controls button:hover {
+            background-color: var(--button-hover-color);
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .controls {
+                flex-direction: row;
+                gap: 2rem;
+            }
+
+            .controls input {
+                width: 250px;
+            }
+
+            .controls button {
+                width: auto;
+                padding: 0.75rem 1.5rem;
+            }
+
+            nav ul {
+                display: flex;
+                gap: 2rem;
+            }
+
+            table {
+                width: 100%;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            header {
+                padding: 1.5rem 4rem;
+            }
+
+            main {
+                padding: 2rem 4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <input type="checkbox" id="sidebar-active">
+            <label for="sidebar-active" class="open-sidebar-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32">
+                    <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+                </svg>
+            </label>
+            <label id="overlay" for="sidebar-active"></label>
+            <div class="links-container">
+                <label for="sidebar-active" class="close-sidebar-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32">
+                        <path
+                            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                    </svg>
+                </label>
+                <a class="home-link" href="index.html">Generate barcode</a>
+                <a href="scan.html">Scan Barcode</a>
+                <a href="database.html">DataBase</a>
+                <a href="deducted_barcode_data.html">Deducted DataBase</a>
+
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search by Product Name or ID...">
+            <button id="export-csv">Export CSV</button>
+            <button id="export-excel">Export Excel</button>
+            <button id="delete-all">Delete All</button>
+        </div>
+
+        <table id="deducted-barcode-table">
+            <thead>
+                <tr>
+                    <th>Added Quantity</th> <!-- New Column for Added Quantity -->
+                    <th>Deducted Quantity</th>
+                    <th>Timestamp</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Entries will be dynamically added here -->
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Barcode Manager</p>
+    </footer>
+
+
+        <!-- this is the javascript code-->
+
+    <script>
+        const deductedTable = document.getElementById('deducted-barcode-table').querySelector('tbody');
+        const searchInput = document.getElementById('search');
+
+        const getDeductedData = () => JSON.parse(localStorage.getItem('deductedBarcodeData')) || [];
+
+        const setDeductedData = (data) => {
+            localStorage.setItem('deductedBarcodeData', JSON.stringify(data));
+        };
+
+        const renderDeductedTable = () => {
+            const data = getDeductedData();
+            const filter = searchInput.value.toLowerCase();
+            deductedTable.innerHTML = '';
+
+            data
+                .filter(entry =>
+                    entry.productId.toLowerCase().includes(filter) ||
+                    entry.productName.toLowerCase().includes(filter))
+                .forEach((entry, index) => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+
+                <td>${entry.addedQuantity}</td> <!-- Show Added Quantity -->
+                <td>${entry.deductedQuantity}</td> <!-- Show Deducted Quantity -->
+                <td>${new Date(entry.timestamp).toLocaleString()}</td>
+                <td>
+                    <button onclick="deleteDeductedEntry(${index})">Delete</button>
+                </td>
+            `;
+
+                    deductedTable.appendChild(row);
+                });
+        };
+
+        const deleteDeductedEntry = (index) => {
+            const data = getDeductedData();
+            data.splice(index, 1);
+            setDeductedData(data);
+            renderDeductedTable();
+        };
+
+        const deleteAllDeductedEntries = () => {
+            if (confirm('Are you sure you want to delete all entries? This action cannot be undone.')) {
+                setDeductedData([]);
+                renderDeductedTable();
+            }
+        };
+
+        const exportDeductedData = (type) => {
+            const data = getDeductedData();
+            let content = '';
+
+            if (type === 'csv') {
+                content = 'Barcode,Product ID,Product Name,Added Quantity,Deducted Quantity,Amount Deducted,Timestamp\n';
+                data.forEach(entry => {
+                    content += `${entry.barcode},${entry.productId},${entry.productName},${entry.addedQuantity},${entry.deductedQuantity},${entry.amountDeducted},${entry.timestamp}\n`;
+                });
+
+                const blob = new Blob([content], { type: 'text/csv' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'deducted_barcode_data.csv';
+                link.click();
+            } else if (type === 'excel') {
+                content = '<table><tr><th>Barcode</th><th>Product ID</th><th>Product Name</th><th>Added Quantity</th><th>Deducted Quantity</th><th>Amount Deducted</th><th>Timestamp</th></tr>';
+                data.forEach(entry => {
+                    content += `<tr><td>${entry.barcode}</td><td>${entry.productId}</td><td>${entry.productName}</td><td>${entry.addedQuantity}</td><td>${entry.deductedQuantity}</td><td>${entry.amountDeducted}</td><td>${entry.timestamp}</td></tr>`;
+                });
+                content += '</table>';
+
+                const blob = new Blob([content], { type: 'application/vnd.ms-excel' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'deducted_barcode_data.xls';
+                link.click();
+            }
+        };
+
+        document.getElementById('export-csv').addEventListener('click', () => exportDeductedData('csv'));
+        document.getElementById('export-excel').addEventListener('click', () => exportDeductedData('excel'));
+        document.getElementById('delete-all').addEventListener('click', deleteAllDeductedEntries);
+        searchInput.addEventListener('input', renderDeductedTable);
+
+        renderDeductedTable();
+
+    </script>
+
+    <!-- Javascript Ends -->
+</body>
+
+</html>
