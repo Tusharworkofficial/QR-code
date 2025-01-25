@@ -4,10 +4,11 @@
     --background-color: #576363;
     --text-color: #333333;
     --accent-color: #8F0524;
-    --button-hover-color: #ac1432;
+    --button-hover-color: #4A0714;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --background-colors: #f5f5f5;
     --highlight-color: #FCC5A8;
+    /* New color for navbar text and buttons */
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -46,7 +47,7 @@ nav {
 
 nav a {
     height: 100%;
-    padding: 0 57px;
+    padding: 0 20px;
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -148,16 +149,25 @@ header {
     color: var(--secondary-color);
     padding: 1.5rem 2rem;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     padding-left: 2px;
-    background: linear-gradient(45deg, #8F0524, #d34724);
+}
+
+@media (min-width: 1024px) {
+    header {
+        padding: 1.5rem 4rem;
+    }
+
+    main {
+        padding: 2rem 4rem;
+    }
 }
 
 .nav-logo {
     font-size: 1.8rem;
-    color: var(--secondary-color);
+    color: var(--highlight-color);
     font-weight: bold;
     text-decoration: none;
 }
@@ -168,15 +178,15 @@ nav ul {
     margin: 0;
     display: flex;
     gap: 2rem;
+    align-items: center;
 }
 
 nav ul li {
-    display: inline;
     position: relative;
 }
 
 nav ul li a {
-    color: var(--secondary-color);
+    color: var(--highlight-color);
     text-decoration: none;
     font-weight: bold;
 }
@@ -188,11 +198,13 @@ nav ul li a:hover {
 nav ul li .dropdown {
     display: none;
     position: absolute;
+    top: 100%;
+    left: 0;
     background-color: var(--primary-color);
     box-shadow: 0 4px 6px var(--shadow-color);
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+    border-radius: 4px;
     z-index: 1000;
+    padding: 0.5rem 0;
 }
 
 nav ul li:hover .dropdown {
@@ -201,19 +213,20 @@ nav ul li:hover .dropdown {
 
 nav ul li .dropdown a {
     display: block;
-    color: var(--secondary-color);
-    padding: 0.5rem 0;
-    text-decoration: none;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
 }
 
 nav ul li .dropdown a:hover {
-    text-decoration: underline;
+    background-color: var(--button-hover-color);
 }
 
 main {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* this is aadition css                     ------------   --------------*/
