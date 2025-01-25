@@ -136,6 +136,7 @@
         const displayResult = (data) => {
             if (!data) {
                 alert('No data found for this barcode.');
+                barcodeInput.value = '';
                 return;
             }
 
